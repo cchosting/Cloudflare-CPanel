@@ -112,7 +112,8 @@ if [ "$LOCAL_FILE_PATH" = "" ]; then
     fi
 
     # Download and extract
-    DOWNLOAD_URL="https://github.com/cloudflare/CloudFlare-CPanel/archive/v$LATEST_VERSION.tar.gz"
+    DOWNLOAD_URL="https://github.com/cloudflare/CloudFlare-CPanel/archive/refs/tags/v$LATEST_VERSION.tar.gz"
+
 
     if [ "$VERBOSE" = true ]; then
         echo "curl -sL $DOWNLOAD_URL | tar xfz -"
@@ -219,6 +220,12 @@ install -d $INSTALL_DIR/3rdparty/php/$PHPVERSION/lib/php/cloudflare/src
 
 # Register the plugin buttons with Cpanel
 /usr/local/cpanel/scripts/install_plugin $SOURCE_DIR/installers/cloudflare_simple.tar.bz2
+
+# symlink for Jupiter, and registration.
+ln -s /usr/local/cpanel/base/frontend/paper_lantern/cloudflare /usr/local/cpanel/base/frontend/jupiter/cloudflare
+/usr/local/cpanel/scripts/install_plugin $SOURCE_DIR/installers/cloudflare_simple.tar.bz2 --theme jupiter
+
+
 
 # Copy cloudflare_update.sh to where the cron expects it to be
 install $SOURCE_DIR/cloudflare_update.sh $INSTALL_DIR/bin
